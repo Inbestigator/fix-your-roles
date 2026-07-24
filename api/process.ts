@@ -39,11 +39,7 @@ export async function GET(req: Request) {
     const chromium = (await import("@sparticuz/chromium-min")).default;
     puppeteer = await import("puppeteer-core");
     const executablePath = await getChromiumPath();
-    launchOptions = {
-      ...launchOptions,
-      args: chromium.args,
-      executablePath,
-    };
+    launchOptions = { ...launchOptions, args: chromium.args, executablePath };
   } else {
     puppeteer = await import("puppeteer");
   }
@@ -74,6 +70,8 @@ export async function GET(req: Request) {
     ),
   );
 
+  project.appState.exportWithDarkMode = url.searchParams.has("dark");
+
   try {
     const page = await browser.newPage();
 
@@ -88,15 +86,12 @@ export async function GET(req: Request) {
 
     await page.setContent(svg);
 
-    const png = await page
+    const webp = await page
       .$("svg")
-      .then((el) => el?.screenshot({ type: "png", omitBackground: true }));
+      .then((el) => el?.screenshot({ type: "webp", omitBackground: true }));
 
-    return new Response(png as unknown as Blob, {
-      headers: {
-        "Content-Type": "image/png",
-        "Cache-Control": "public, max-age=3600",
-      },
+    return new Response(webp as unknown as Blob, {
+      headers: { "Content-Type": "image/webp", "Cache-Control": "public, max-age=3600" },
     });
   } finally {
     await browser.close();
