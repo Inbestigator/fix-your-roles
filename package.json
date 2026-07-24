@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@sparticuz/chromium-min": "^149.0.0",
+    "puppeteer-core": "^25.3.0"
+  },
+  "devDependencies": {
+    "@sparticuz/chromium": "^149.0.0",
+    "@types/node": "^26.1.1",
+    "puppeteer": "^25.3.0",
+    "typescript": "6"
+  }
+}
